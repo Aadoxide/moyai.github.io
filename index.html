@@ -90,32 +90,3 @@
     <script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 </html>
-can you make it so that the ip it gets will be converted into regional location, postal, etc. using this script?
-async function getLocation(ipAddress) {
-    const url = `http://ipinfo.io/${ipAddress}/json`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return null;
-    }
-}
-
-const ipAddress = '';
-getLocation(ipAddress)
-    .then(locationInfo => {
-        console.log("Location Information:");
-        console.log("IP:", locationInfo.ip);
-        console.log("City:", locationInfo.city);
-        console.log("Region:", locationInfo.region);
-        console.log("Country:", locationInfo.country);
-        console.log("Location:", locationInfo.loc);
-        console.log("Currency:", locationInfo.currency);
-        console.log("Region Code:", locationInfo.region);
-        console.log("Network:", locationInfo.org);
-        console.log("Country Capital:", locationInfo.country);
-        console.log("Latitude:", locationInfo.loc.split(",")[0]);
-        console.log("Longitude:", locationInfo.loc.split(",")[1]);
-        console.log("Postal Code:", locationInfo.postal);
-    });
